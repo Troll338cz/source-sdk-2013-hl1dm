@@ -26,8 +26,6 @@
 //-----------------------------------------------------------------------------
 
 
-#define SNARK_NEST_MODEL	"models/w_sqknest.mdl"
-
 
 class CWeaponSnark : public CBaseHL1CombatWeapon
 {
@@ -79,8 +77,6 @@ void CWeaponSnark::Precache( void )
 
 	PrecacheScriptSound( "WpnSnark.PrimaryAttack" );
 	PrecacheScriptSound( "WpnSnark.Deploy" );
-
-	PrecacheModel(SNARK_NEST_MODEL); // Even if not used we still should precache
 
 	UTIL_PrecacheOther("monster_snark");
 }
