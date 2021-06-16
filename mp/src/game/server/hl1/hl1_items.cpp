@@ -16,6 +16,7 @@ void CHL1Item::Spawn( void )
 {
 	SetMoveType( MOVETYPE_FLYGRAVITY );
 	SetSolid( SOLID_BBOX );
+	AddSolidFlags( FSOLID_NOT_SOLID ); // Fixes wierd bug with bullet decals being placed on ammo etc. 
 	AddSolidFlags( FSOLID_NOT_STANDABLE | FSOLID_TRIGGER );
 	CollisionProp()->UseTriggerBounds( true, 24.0f );
 	
