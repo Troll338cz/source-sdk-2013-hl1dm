@@ -10,16 +10,14 @@
 
 $Group "gamedlls"
 {
-	"client"
-	"server"
+	"server_hl1dm"
 }
 
 $Group "game"
 {
-	"client"
 	"mathlib"
 	"raytrace"
-	"server"
+	"server_hl1dm"
 	"tier1"
 	"vgui_controls"
 }
@@ -32,7 +30,6 @@ $Group "shaders"
 $Group "everything"
 {
 	"captioncompiler"
-	"client"
 	"fgdlib"
 	"game_shader_dx9"
 	"glview"
@@ -42,7 +39,7 @@ $Group "everything"
 	"phonemeextractor"
 	"raytrace"
 	"qc_eyes"
-	"server"
+	"server_hl1dm"
 	"serverplugin_empty"
 	"tgadiff"
 	"tier1"

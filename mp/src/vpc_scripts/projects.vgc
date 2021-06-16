@@ -44,6 +44,11 @@ $Project "server"
 	"game\server\server_hl2mp.vpc"		[($WIN32||$POSIX) && $HL2MP]
 }
 
+$Project "server_hl1dm"
+{
+	"game\server\server_hl1mp.vpc"		[($WIN32||$POSIX)]
+}
+
 $Project "mathlib"
 {
 	"mathlib\mathlib.vpc" [$WINDOWS||$X360||$POSIX]
