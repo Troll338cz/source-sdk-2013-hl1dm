@@ -463,6 +463,8 @@ void CWeaponGauss::Fire( Vector vecOrigSrc, Vector vecDir, float flDamage )
 			te->DispatchEffect( filter, 0.0, data6.m_vOrigin, "HL1GaussBeamReflect", data6 );
 		}
 		
+		bool fShouldDamageEntity = true;
+
 		ConVarRef mp_selfgauss("mp_selfgauss");
 
 		if (mp_selfgauss.IsValid() && mp_selfgauss.GetBool() == true)
