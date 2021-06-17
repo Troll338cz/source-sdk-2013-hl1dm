@@ -78,6 +78,9 @@ ConVar sk_npc_dmg_12mm_bullet		( "sk_npc_dmg_12mm_bullet",		"0", FCVAR_REPLICATE
 
 ConVar sk_mp_dmg_multiplier ( "sk_mp_dmg_multiplier", "2.0" );
 
+ConVar mp_selfgauss ("mp_selfgauss",	"0.0",	FCVAR_REPLICATED,	"Enable or diabale selfgaussing");
+
+
 // Damage Queries.
 
 //-----------------------------------------------------------------------------

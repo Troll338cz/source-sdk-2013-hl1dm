@@ -463,7 +463,12 @@ void CWeaponGauss::Fire( Vector vecOrigSrc, Vector vecDir, float flDamage )
 			te->DispatchEffect( filter, 0.0, data6.m_vOrigin, "HL1GaussBeamReflect", data6 );
 		}
 		
-		bool fShouldDamageEntity = ( pEntity->m_takedamage != DAMAGE_NO );
+		ConVarRef mp_selfgauss("mp_selfgauss");
+
+		if (mp_selfgauss.IsValid() && mp_selfgauss.GetBool() == true)
+			fShouldDamageEntity = (pEntity->m_takedamage != DAMAGE_NO );
+		else
+			fShouldDamageEntity = (pEntity->m_takedamage != DAMAGE_NO || pEntity != this->GetOwner());
 
 		if ( fShouldDamageEntity )
 		{
