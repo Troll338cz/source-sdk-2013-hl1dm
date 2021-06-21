@@ -170,12 +170,14 @@ void CWeaponMP5::SecondaryAttack( void )
 	Vector vecSrc = pPlayer->Weapon_ShootPosition();
 	Vector vecThrow = pPlayer->GetAutoaimVector( 0 ) * 800;
 	QAngle angGrenAngle;
+	Vector vecFwd;
 
 	VectorAngles( vecThrow, angGrenAngle );
+	AngleVectors( angGrenAngle, &vecFwd, NULL, NULL );
 
-#ifdef CLIENT_DLL
-#else
-	CGrenadeMP5 * m_pMyGrenade = (CGrenadeMP5*)Create( "grenade_mp5", vecSrc, angGrenAngle, GetOwner() );
+
+#ifndef CLIENT_DLL
+	CGrenadeMP5 * m_pMyGrenade = (CGrenadeMP5*)Create("grenade_mp5", vecSrc + (vecFwd * 16), angGrenAngle, GetOwner());
 	m_pMyGrenade->SetAbsVelocity( vecThrow );
 	m_pMyGrenade->SetLocalAngularVelocity( QAngle( random->RandomFloat( -100, -500 ), 0, 0 ) );
 	m_pMyGrenade->SetMoveType( MOVETYPE_FLYGRAVITY ); 
