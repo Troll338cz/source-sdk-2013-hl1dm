@@ -80,6 +80,7 @@ ConVar sk_mp_dmg_multiplier ( "sk_mp_dmg_multiplier", "2.0" );
 
 ConVar mp_selfgauss ("mp_selfgauss",	"0.0",	FCVAR_REPLICATED,	"Enable or diabale selfgaussing");
 
+ConVar room_type ("room_type",	"0.0",	FCVAR_REPLICATED, "Stub");
 
 // Damage Queries.
 
