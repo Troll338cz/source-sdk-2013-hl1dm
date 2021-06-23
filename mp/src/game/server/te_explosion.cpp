@@ -113,9 +113,6 @@ static CTEExplosion g_TEExplosion( "Explosion" );
 void TE_Explosion( IRecipientFilter& filter, float delay,
 	const Vector* pos, int modelindex, float scale, int framerate, int flags, int radius, int magnitude, const Vector* normal, unsigned char materialType )
 {
-	if(scale >= 51.2) // Ugly hack here but it should supress a lot of errors
-		scale = 51.2;
-	
 	g_TEExplosion.m_vecOrigin		= *pos;
 	g_TEExplosion.m_nModelIndex		= modelindex;	
 	g_TEExplosion.m_fScale			= scale;

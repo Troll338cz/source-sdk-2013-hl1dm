@@ -105,10 +105,15 @@ void CGrenadeMP5::Detonate(void)
 
 	CPASFilter filter( GetAbsOrigin() );
 
+	float scale = (m_flDamage - 50) * .60;
+	if (scale >= 51) // Ugly hack here but it should supress a lot of errors
+		scale = 51;
+
+
 	te->Explosion( filter, 0.0,
 		&GetAbsOrigin(), 
 		GetWaterLevel() == 0 ? g_sModelIndexFireball : g_sModelIndexWExplosion,
-		(m_flDamage - 50) * .60, 
+		scale,
 		15,
 		TE_EXPLFLAG_NONE,
 		m_DmgRadius,
