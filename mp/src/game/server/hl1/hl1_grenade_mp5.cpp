@@ -108,7 +108,8 @@ void CGrenadeMP5::Detonate(void)
 	float scale = (m_flDamage - 50) * .60;
 	if (scale >= 51) // Ugly hack here but it should supress a lot of errors
 		scale = 51;
-
+	if (scale >= 0) // This can go negative with custom skill settings...
+		scale = 15;
 
 	te->Explosion( filter, 0.0,
 		&GetAbsOrigin(), 
