@@ -17,6 +17,7 @@ $Project "captioncompiler"
 $Project "client"
 {
 	"game\client\client_hl2mp.vpc"		[($WIN32||$POSIX) && $HL2MP]
+	"game\client\client_hl1mp.vpc"		[($WIN32||$POSIX) && $HL1MP]
 }
 
 $Project "fgdlib"
@@ -42,12 +43,9 @@ $Project "height2normal"
 $Project "server"
 {
 	"game\server\server_hl2mp.vpc"		[($WIN32||$POSIX) && $HL2MP]
+	"game\server\server_hl1mp.vpc"		[($WIN32||$POSIX) && $HL1MP]
 }
 
-$Project "server_hl1dm"
-{
-	"game\server\server_hl1mp.vpc"		[($WIN32||$POSIX)]
-}
 
 $Project "mathlib"
 {

@@ -10,14 +10,16 @@
 
 $Group "gamedlls"
 {
-	"server_hl1dm"
+	"server"
+	"client"
 }
 
 $Group "game"
 {
 	"mathlib"
 	"raytrace"
-	"server_hl1dm"
+	"server"
+	"client"
 	"tier1"
 	"vgui_controls"
 }
@@ -39,7 +41,8 @@ $Group "everything"
 	"phonemeextractor"
 	"raytrace"
 	"qc_eyes"
-	"server_hl1dm"
+	"server"
+	"client"
 	"serverplugin_empty"
 	"tgadiff"
 	"tier1"
