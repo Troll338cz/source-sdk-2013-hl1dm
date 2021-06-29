@@ -25,8 +25,6 @@
 
 #include "hl1mp_gamerules.h"
 
-#if 1
-
 enum
 {
 	TEAM_COMBINE = 2,
@@ -43,6 +41,7 @@ enum EScoreboardSections
 	SCORESECTION_COMBINE = 1,
 	SCORESECTION_REBELS = 2,
 	SCORESECTION_FREEFORALL = 3,
+	SCORESECTION_SPECTATOR = 4
 };
 
 const int NumSegments = 7;
@@ -101,7 +100,7 @@ void CHL1MPClientScoreBoardDialog::Paint()
 //-----------------------------------------------------------------------------
 void CHL1MPClientScoreBoardDialog::PaintBackground()
 {
-	m_pPlayerList->SetBgColor( Color(0, 0, 0, 0) );
+	m_pPlayerList->SetBgColor(Color(0, 0, 0, 0));
 	m_pPlayerList->SetBorder(NULL);
 
 	int x1, x2, y1, y2;
@@ -109,10 +108,7 @@ void CHL1MPClientScoreBoardDialog::PaintBackground()
 	surface()->DrawSetTextColor(m_bgColor);
 
 	int wide, tall;
-	GetSize( wide, tall );
-
-	surface()->DrawFilledRect( 0, 0, wide, tall );
-	return;
+	GetSize(wide, tall);
 
 	int i;
 
@@ -125,13 +121,13 @@ void CHL1MPClientScoreBoardDialog::PaintBackground()
 	int yMult = 1;
 	int x = 0;
 	int y = 0;
-	for ( i=0; i<NumSegments; ++i )
+	for (i = 0; i<NumSegments; ++i)
 	{
-		x1 = MIN( x + coord[xIndex]*xMult, x + coord[xIndex+1]*xMult );
-		x2 = MAX( x + coord[xIndex]*xMult, x + coord[xIndex+1]*xMult );
-		y1 = MAX( y + coord[yIndex]*yMult, y + coord[yIndex+1]*yMult );
+		x1 = MIN(x + coord[xIndex] * xMult, x + coord[xIndex + 1] * xMult);
+		x2 = MAX(x + coord[xIndex] * xMult, x + coord[xIndex + 1] * xMult);
+		y1 = MAX(y + coord[yIndex] * yMult, y + coord[yIndex + 1] * yMult);
 		y2 = y + coord[NumSegments];
-		surface()->DrawFilledRect( x1, y1, x2, y2 );
+		surface()->DrawFilledRect(x1, y1, x2, y2);
 
 		xIndex += xDir;
 		yIndex += yDir;
@@ -146,13 +142,13 @@ void CHL1MPClientScoreBoardDialog::PaintBackground()
 	y = 0;
 	xMult = -1;
 	yMult = 1;
-	for ( i=0; i<NumSegments; ++i )
+	for (i = 0; i<NumSegments; ++i)
 	{
-		x1 = MIN( x + coord[xIndex]*xMult, x + coord[xIndex+1]*xMult );
-		x2 = MAX( x + coord[xIndex]*xMult, x + coord[xIndex+1]*xMult );
-		y1 = MAX( y + coord[yIndex]*yMult, y + coord[yIndex+1]*yMult );
+		x1 = MIN(x + coord[xIndex] * xMult, x + coord[xIndex + 1] * xMult);
+		x2 = MAX(x + coord[xIndex] * xMult, x + coord[xIndex + 1] * xMult);
+		y1 = MAX(y + coord[yIndex] * yMult, y + coord[yIndex + 1] * yMult);
 		y2 = y + coord[NumSegments];
-		surface()->DrawFilledRect( x1, y1, x2, y2 );
+		surface()->DrawFilledRect(x1, y1, x2, y2);
 		xIndex += xDir;
 		yIndex += yDir;
 	}
@@ -166,13 +162,13 @@ void CHL1MPClientScoreBoardDialog::PaintBackground()
 	y = tall;
 	xMult = -1;
 	yMult = -1;
-	for ( i=0; i<NumSegments; ++i )
+	for (i = 0; i<NumSegments; ++i)
 	{
-		x1 = MIN( x + coord[xIndex]*xMult, x + coord[xIndex+1]*xMult );
-		x2 = MAX( x + coord[xIndex]*xMult, x + coord[xIndex+1]*xMult );
+		x1 = MIN(x + coord[xIndex] * xMult, x + coord[xIndex + 1] * xMult);
+		x2 = MAX(x + coord[xIndex] * xMult, x + coord[xIndex + 1] * xMult);
 		y1 = y - coord[NumSegments];
-		y2 = MIN( y + coord[yIndex]*yMult, y + coord[yIndex+1]*yMult );
-		surface()->DrawFilledRect( x1, y1, x2, y2 );
+		y2 = MIN(y + coord[yIndex] * yMult, y + coord[yIndex + 1] * yMult);
+		surface()->DrawFilledRect(x1, y1, x2, y2);
 		xIndex += xDir;
 		yIndex += yDir;
 	}
@@ -186,13 +182,13 @@ void CHL1MPClientScoreBoardDialog::PaintBackground()
 	y = tall;
 	xMult = 1;
 	yMult = -1;
-	for ( i=0; i<NumSegments; ++i )
+	for (i = 0; i<NumSegments; ++i)
 	{
-		x1 = MIN( x + coord[xIndex]*xMult, x + coord[xIndex+1]*xMult );
-		x2 = MAX( x + coord[xIndex]*xMult, x + coord[xIndex+1]*xMult );
+		x1 = MIN(x + coord[xIndex] * xMult, x + coord[xIndex + 1] * xMult);
+		x2 = MAX(x + coord[xIndex] * xMult, x + coord[xIndex + 1] * xMult);
 		y1 = y - coord[NumSegments];
-		y2 = MIN( y + coord[yIndex]*yMult, y + coord[yIndex+1]*yMult );
-		surface()->DrawFilledRect( x1, y1, x2, y2 );
+		y2 = MIN(y + coord[yIndex] * yMult, y + coord[yIndex + 1] * yMult);
+		surface()->DrawFilledRect(x1, y1, x2, y2);
 		xIndex += xDir;
 		yIndex += yDir;
 	}
@@ -202,21 +198,21 @@ void CHL1MPClientScoreBoardDialog::PaintBackground()
 	x2 = coord[NumSegments];
 	y1 = coord[NumSegments];
 	y2 = tall - coord[NumSegments];
-	surface()->DrawFilledRect( x1, y1, x2, y2 );
+	surface()->DrawFilledRect(x1, y1, x2, y2);
 
 	// paint between left and right -------------------------------------------
 	x1 = coord[NumSegments];
 	x2 = wide - coord[NumSegments];
 	y1 = 0;
 	y2 = tall;
-	surface()->DrawFilledRect( x1, y1, x2, y2 );
-	
+	surface()->DrawFilledRect(x1, y1, x2, y2);
+
 	// paint between top right and bottom right -------------------------------
 	x1 = wide - coord[NumSegments];
 	x2 = wide;
 	y1 = coord[NumSegments];
 	y2 = tall - coord[NumSegments];
-	surface()->DrawFilledRect( x1, y1, x2, y2 );
+	surface()->DrawFilledRect(x1, y1, x2, y2);
 }
 
 //-----------------------------------------------------------------------------
@@ -224,7 +220,6 @@ void CHL1MPClientScoreBoardDialog::PaintBackground()
 //-----------------------------------------------------------------------------
 void CHL1MPClientScoreBoardDialog::PaintBorder()
 {
-	return;
 	int x1, x2, y1, y2;
 	surface()->DrawSetColor(m_borderColor);
 	surface()->DrawSetTextColor(m_borderColor);
@@ -697,7 +692,4 @@ void CHL1MPClientScoreBoardDialog::UpdatePlayerInfo()
 	{
 		m_pPlayerList->SetSelectedItem(selectedRow);
 	}
-
-	
 }
-#endif
