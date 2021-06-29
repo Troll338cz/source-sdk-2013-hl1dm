@@ -308,13 +308,7 @@ DECLARE_CLIENT_EFFECT( "ImpactCrowbar", ImpactCrowbarCallback );
 //-----------------------------------------------------------------------------
 void CWeaponCrowbar::ImpactEffect( void )
 {
-	//FIXME: need new decals
-#ifdef HL1MP_CLIENT_DLL
-	// in hl1mp force the basic crowbar sound
-	UTIL_ImpactTrace( &m_traceHit, DMG_CLUB, "ImpactCrowbar" );
-#else
 	UTIL_ImpactTrace( &m_traceHit, DMG_CLUB );
-#endif
 }
 
 //------------------------------------------------------------------------------
