@@ -62,6 +62,7 @@ public:
 	}
 
 	void DetonateSatchelCharges( void );
+	void DetonateTripmines( void );
 
 	CNetworkVar( int, m_iRealSequence );
 

@@ -9,6 +9,7 @@
 #include "hl1mp_player.h"
 #include "client.h"
 #include "team.h"
+#include "hl1_grenade_tripmine.h"
 
 class CTEPlayerAnimEvent : public CBaseTempEntity
 {
@@ -191,7 +192,22 @@ void CHL1MP_Player::DetonateSatchelCharges( void )
 	{
 		if ( pSatchel->GetOwnerEntity() == this )
 		{
-			pSatchel->Use( this, this, USE_ON, 0 );
+			UTIL_Remove( pSatchel );
+			/* pSatchel->Use( this, this, USE_ON, 0 ); */ 
+		}
+	}
+}
+
+void CHL1MP_Player::DetonateTripmines(void)
+{
+	CTripmineGrenade *pTripmine = NULL;
+
+	while ((pTripmine = (CTripmineGrenade*)gEntList.FindEntityByClassname(pTripmine, "monster_tripmine")) != NULL)
+	{
+		if ( pTripmine->m_hRealOwner == this )
+		{
+			pTripmine->m_DmgRadius = 0.0;		
+			pTripmine->TakeDamage(CTakeDamageInfo(this, this, 2.0, DMG_GENERIC));
 		}
 	}
 }
@@ -208,6 +224,7 @@ void CHL1MP_Player::Event_Killed( const CTakeDamageInfo &info )
 		CreateRagdollEntity();
 
 	DetonateSatchelCharges();
+	DetonateTripmines();
 
 	BaseClass::Event_Killed( info );
 
