@@ -135,11 +135,6 @@ void CWeaponTripMine::PrimaryAttack( void )
 			VectorAngles( tr.plane.normal, angles );
 
 			CTripmineGrenade *pTrip = (CTripmineGrenade*)Create("monster_tripmine", tr.endpos + tr.plane.normal * 2, angles, pPlayer);
-			if (pTrip)
-			{
-				pTrip->SetOwnerEntity(pPlayer);
-			}
-
 
 			pPlayer->RemoveAmmo( 1, m_iPrimaryAmmoType );
 
