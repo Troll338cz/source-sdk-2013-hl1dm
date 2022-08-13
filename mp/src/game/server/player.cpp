@@ -2226,7 +2226,15 @@ void CBasePlayer::StartDeathCam( void )
 void CBasePlayer::StopObserverMode()
 {
 	m_bForcedObserverMode = false;
+
+	m_Local.m_iHideHUD = 0;
 	m_afPhysicsFlags &= ~PFLAG_OBSERVER;
+	m_takedamage = DAMAGE_YES;
+	m_lifeState = LIFE_RESPAWNABLE;
+
+	RemoveSolidFlags(FSOLID_NOT_SOLID);
+	RemoveFlag(FL_GODMODE);
+	RemoveFlag(FL_NOTARGET);
 
 	if ( m_iObserverMode == OBS_MODE_NONE )
 		return;
@@ -2277,16 +2285,19 @@ bool CBasePlayer::StartObserverMode(int mode)
 	}
 	
 	// Setup flags
-    m_Local.m_iHideHUD = HIDEHUD_HEALTH;
+	m_Local.m_iHideHUD = HIDEHUD_HEALTH;
+	m_Local.m_iHideHUD |= HIDEHUD_CROSSHAIR;
 	m_takedamage = DAMAGE_NO;		
 
-	// Become invisible
-	AddEffects( EF_NODRAW );		
+	// Become untouchable
+	AddEffects( EF_NODRAW );
+	AddFlag( FL_GODMODE );
+	AddFlag( FL_NOTARGET );
 
 	m_iHealth = 1;
-	m_lifeState = LIFE_DEAD; // Can't be dead, otherwise movement doesn't work right.
+	m_lifeState = LIFE_ALIVE; // Can't be dead, otherwise movement doesn't work right.
 	m_flDeathAnimTime = gpGlobals->curtime;
-	pl.deadflag = true;
+	pl.deadflag = false; // dont die
 
 	return true;
 }
@@ -2295,7 +2306,6 @@ bool CBasePlayer::SetObserverMode(int mode )
 {
 	if ( mode < OBS_MODE_NONE || mode >= NUM_OBSERVER_MODES )
 		return false;
-
 
 	// check mp_forcecamera settings for dead players
 	if ( mode > OBS_MODE_FIXED && GetTeamNumber() > TEAM_SPECTATOR )
@@ -5012,15 +5022,6 @@ void CBasePlayer::Spawn( void )
 	{
 		m_iPlayerLocked = false;
 		LockPlayerInPlace();
-	}
-
-	if ( GetTeamNumber() != TEAM_SPECTATOR )
-	{
-		StopObserverMode();
-	}
-	else
-	{
-		StartObserverMode( m_iObserverLastMode );
 	}
 
 	StopReplayMode();

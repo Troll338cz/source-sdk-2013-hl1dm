@@ -105,9 +105,7 @@ CHL1MP_Player::CHL1MP_Player()
 	m_flNextModelChangeTime = 0;
 	m_flNextTeamChangeTime = 0;
 
-//	SetViewOffset( TFC_PLAYER_VIEW_OFFSET );
-
-//	SetContextThink( &CTFCPlayer::TFCPlayerThink, gpGlobals->curtime, "TFCPlayerThink" );
+	BaseClass::ChangeTeam( 0 );
 }
 
 CHL1MP_Player::~CHL1MP_Player()
@@ -127,6 +125,14 @@ void CHL1MP_Player::PostThink( void )
 	m_angEyeAngles = EyeAngles();
 
     m_PlayerAnimState->Update( m_angEyeAngles[YAW], m_angEyeAngles[PITCH] );
+}
+
+void CHL1MP_Player::PlayerDeathThink()
+{
+	if (!IsObserver())
+	{
+		BaseClass::PlayerDeathThink();
+	}
 }
 
 void CHL1MP_Player::Spawn( void )
@@ -154,6 +160,7 @@ void CHL1MP_Player::Spawn( void )
 	}
 
 	m_bHasLongJump = false;
+	m_Local.m_iHideHUD = 0;
 
 	m_iSpawnInterpCounter = (m_iSpawnInterpCounter + 1) % 8;
 }
@@ -162,6 +169,63 @@ void CHL1MP_Player::DoAnimationEvent( PlayerAnimEvent_t event, int nData )
 {
 	m_PlayerAnimState->DoAnimationEvent( event, nData );
 	TE_PlayerAnimEvent( this, event, nData );	// Send to any clients who can see this guy.
+}
+
+bool CHL1MP_Player::ClientCommand(const CCommand &args)
+{
+	const char *cmd = args[0];
+
+	if (stricmp(cmd, "spectate") == 0) // join spectator team & start observer mode
+	{
+		if (GetTeamNumber() == TEAM_SPECTATOR)
+			return true;
+
+		ConVarRef mp_allowspectators("mp_allowspectators");
+		if (mp_allowspectators.IsValid())
+		{
+			if ((mp_allowspectators.GetBool() == false) && !IsHLTV() && !IsReplay())
+			{
+				ClientPrint(this, HUD_PRINTCENTER, "#Cannot_Be_Spectator");
+				return true;
+			}
+		}
+
+		if (!IsDead())
+		{
+			CommitSuicide();	// kill player
+		}
+
+		RemoveAllItems(true);
+		CHL1MP_Player::ChangeTeam(TEAM_SPECTATOR);
+
+		return true;
+	}
+	else if (FStrEq(args[0], "jointeam"))
+	{
+		if (args.ArgC() < 2)
+		{
+			Warning("Player sent bad jointeam syntax\n");
+		}
+		int iTeam = atoi(args[1]);
+
+		if (!GetGlobalTeam(iTeam))//|| team == 0)
+		{
+			Warning("JoinTeam( %d ) - invalid team index.\n", iTeam);
+			return true;
+		}
+
+		CHL1MP_Player::ChangeTeam(iTeam);
+
+		return true;
+	}
+
+	return BaseClass::ClientCommand(args);
+}
+
+bool CHL1MP_Player::StartObserverMode(int mode)
+{
+	VPhysicsDestroyObject();
+	return BaseClass::StartObserverMode(mode);
 }
 
 void CHL1MP_Player::GiveDefaultItems( void )
@@ -220,7 +284,7 @@ void CHL1MP_Player::Event_Killed( const CTakeDamageInfo &info )
     
 	// Note: since we're dead, it won't draw us on the client, but we don't set EF_NODRAW
 	// because we still want to transmit to the clients in our PVS.
-	if ( !IsHLTV() )
+	if ( !IsObserver() )
 		CreateRagdollEntity();
 
 	DetonateSatchelCharges();
@@ -504,7 +568,25 @@ void CHL1MP_Player::ChangeTeam( int iTeamNum )
 		}
 	}
 
+	if (IsObserver() && iTeamNum != TEAM_SPECTATOR) // exiting spectator
+	{
+		StopObserverMode();
+		Spawn();
+
+		return;
+	}
+
+	if (iTeamNum == TEAM_SPECTATOR)
+	{
+		StartObserverMode(OBS_MODE_ROAMING);
+	}
+
 	BaseClass::ChangeTeam( iTeamNum );
+
+	if (FlashlightIsOn())
+	{
+		FlashlightTurnOff();
+	}
 
 	m_flNextTeamChangeTime = gpGlobals->curtime + 5;
 
@@ -517,7 +599,7 @@ void CHL1MP_Player::ChangeTeam( int iTeamNum )
 		SetPlayerModel();
 	}
 
-	if ( bKill == true )
+	if ( bKill == true && !IsObserver() )
 	{
 		CommitSuicide();
 	}

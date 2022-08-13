@@ -284,6 +284,16 @@ void CHL1GameMovement::HandleDuckingSpeedCrop()
 	}
 }
 
+bool CHL1GameMovement::CanAccelerate()
+{
+	if ( player->IsObserver() )
+	{
+		return true;
+	}
+
+	return BaseClass::CanAccelerate();
+}
+
 void CHL1GameMovement::CheckParameters( void )
 {
 	if ( mv->m_nButtons & IN_SPEED )
