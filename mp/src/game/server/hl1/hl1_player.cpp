@@ -543,12 +543,6 @@ void CHL1_Player::Spawn(void)
 
 	BaseClass::Spawn();
 
-	//
-	// Our player movement speed is set once here. This will override the cl_xxxx
-	// cvars unless they are set to be lower than this.
-	//
-	SetMaxSpeed( 1000 );
-
 	SetDefaultFOV( 0 );
 
 	m_nFlashBattery = 99;
