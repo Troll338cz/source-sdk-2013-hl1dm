@@ -136,18 +136,17 @@ CHL1MPRules::CHL1MPRules()
 #ifndef CLIENT_DLL
 	m_bTeamPlayEnabled = teamplay.GetBool();
 
+	// Create basic server teams
+	CTeam *pTeam = static_cast<CTeam*>(CreateEntityByName( "team_manager" ));
+
+	pTeam->Init( "Unassigned", 0 );
+	g_Teams.AddToTail( pTeam );
+
+	pTeam->Init( "Spectator", 1 );
+	g_Teams.AddToTail( pTeam );
+
 	if ( IsTeamplay() )
 	{
-		// Create basic server teams
-
-		CTeam *pTeam = static_cast<CTeam*>(CreateEntityByName( "team_manager" ));
-		pTeam->Init( "Unassigned", 0 );
-		g_Teams.AddToTail( pTeam );
-
-		pTeam = static_cast<CTeam*>(CreateEntityByName( "team_manager" ));
-		pTeam->Init( "Spectator", 1 );
-		g_Teams.AddToTail( pTeam );
-
 		char	*pName;
 		char	szTeamlist[TEAMPLAY_TEAMLISTLENGTH];
 
