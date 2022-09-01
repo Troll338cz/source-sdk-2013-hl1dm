@@ -351,7 +351,7 @@ void C_HL1MPRagdoll::ImpactTrace( trace_t *pTrace, int iDamageType, const char *
 
 void C_HL1MP_Player::CalcView( Vector &eyeOrigin, QAngle &eyeAngles, float &zNear, float &zFar, float &fov )
 {
-	if ( m_lifeState != LIFE_ALIVE )
+	if (m_lifeState != LIFE_ALIVE && !IsObserver())
 	{
 		Vector origin = EyePosition();			
 

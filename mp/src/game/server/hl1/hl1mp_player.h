@@ -34,6 +34,7 @@ public:
     virtual void Event_Killed( const CTakeDamageInfo &info );
     virtual void Spawn( void );
     virtual void PostThink( void );
+	virtual void PlayerDeathThink(void);
     virtual void SetAnimation( PLAYER_ANIM playerAnim );
     void GiveDefaultItems( void );
     void CreateRagdollEntity( void );
@@ -54,12 +55,8 @@ public:
 
 	void DoAnimationEvent( PlayerAnimEvent_t event, int nData = 0 );
 
-	virtual bool StartObserverMode (int mode) 
-	{
-		if ( !IsHLTV() )
-			return false;	
-		return BaseClass::StartObserverMode( mode );	
-	}
+	virtual bool StartObserverMode(int mode);
+	virtual bool ClientCommand(const CCommand &args);
 
 	void DetonateSatchelCharges( void );
 	void DetonateTripmines( void );
